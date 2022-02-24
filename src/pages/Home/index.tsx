@@ -7,7 +7,7 @@ import { useAsyncData } from "../../hooks/useAsyncData";
 
 export default function Home() {
   const { data } = useAsyncData();
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
   return (
     <S.Root>
       <S.Title>Home</S.Title>

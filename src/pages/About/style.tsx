@@ -8,3 +8,5 @@ export const Root = styled.div`
 export const Title = styled.h1`
   color: blue;
 `;
+
+export const Message = styled.p``;
