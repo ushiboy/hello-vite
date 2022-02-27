@@ -53,21 +53,28 @@ async function createServer(
     try {
       const url = req.originalUrl;
 
-      let template, render;
+      let template, render, initializeState;
       if (!isProd) {
         // always read fresh template in dev
         template = fs.readFileSync(resolve("index.html"), "utf-8");
         template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule("/src/entry-server.tsx")).render;
+        initializeState = (await vite.ssrLoadModule("/src/entry-server.tsx"))
+          .initializeState;
       } else {
         template = indexProd;
         render = require("./dist/server/entry-server.js").render;
+        initializeState =
+          require("./dist/server/entry-server.js").initializeState;
       }
 
-      const [appHtml, appStyle] = await render(url);
+      // ここでurlから初期描画用の状態を作る
+      const state = await initializeState(url);
+      const [appHtml, appStyle] = await render(url, state);
       const html = template
         .replace(`<!--app-html-->`, appHtml)
-        .replace(`<!--app-style-->`, appStyle);
+        .replace(`<!--app-style-->`, appStyle)
+        .replace(`<!--app-init-state-->`, JSON.stringify(state));
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {

@@ -1,11 +1,13 @@
+export * from "./type";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 import * as S from "./style";
+import { HomeProvider } from "./context";
 
-import { useAsyncData } from "../../hooks/useAsyncData";
+import { useAsyncData } from "./hooks/useAsyncData";
 
-export default function Home() {
+const HomeContainer: React.FC = () => {
   const { data } = useAsyncData();
   const { t } = useTranslation("common");
   return (
@@ -18,5 +20,13 @@ export default function Home() {
         ))}
       </S.Items>
     </S.Root>
+  );
+};
+
+export default function Home() {
+  return (
+    <HomeProvider>
+      <HomeContainer />
+    </HomeProvider>
   );
 }
