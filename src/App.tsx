@@ -16,31 +16,40 @@ const theme = {
   },
 };
 
+import { AppState } from "./AppState";
+import { AppStateProvider } from "./AppContext";
+
 import Home from "./pages/Home";
 import About from "./pages/About";
 
-function App() {
+type Props = {
+  state: AppState;
+};
+
+const App: React.FC<Props> = ({ state }) => {
   return (
-    <>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
-        <nav>
-          <ul>
-            <li>
-              <Link to={"/"}>Home</Link>
-            </li>
-            <li>
-              <Link to={"/about"}>About</Link>
-            </li>
-          </ul>
-        </nav>
-        <Routes>
-          <Route path={"/"} element={<Home />} />
-          <Route path={"/about"} element={<About />} />
-        </Routes>
-      </ThemeProvider>
-    </>
+    <AppStateProvider value={{ state }}>
+      <>
+        <GlobalStyle />
+        <ThemeProvider theme={theme}>
+          <nav>
+            <ul>
+              <li>
+                <Link to={"/"}>Home</Link>
+              </li>
+              <li>
+                <Link to={"/about"}>About</Link>
+              </li>
+            </ul>
+          </nav>
+          <Routes>
+            <Route path={"/"} element={<Home />} />
+            <Route path={"/about"} element={<About />} />
+          </Routes>
+        </ThemeProvider>
+      </>
+    </AppStateProvider>
   );
-}
+};
 
 export default App;

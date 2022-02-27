@@ -10,3 +10,7 @@ export const Title = styled.h1`
 `;
 
 export const Message = styled.p``;
+
+export const Items = styled.ul``;
+
+export const Item = styled.li``;
